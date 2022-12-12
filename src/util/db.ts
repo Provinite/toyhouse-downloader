@@ -1,16 +1,17 @@
 import { promises as fs, existsSync } from "fs";
 import { Protocol } from "puppeteer";
+import { join, resolve } from "path";
 
-export const characterList = createDb<Character[], []>(
-  () => "./characters/characters.json"
+export const characterList = createDb<Character[], []>(() =>
+  resolve(join(".", "characters", "characters.json"))
 );
 
 export const characterDetail = createDb<DetailedCharacter, [id: string]>(
-  (id: string) => `./characters/${id}.json`
+  (id: string) => resolve(join(".", "characters", `${id}.json`))
 );
 
-export const browserCookies = createDb<Protocol.Network.Cookie[], []>(
-  () => `cookies.json`
+export const browserCookies = createDb<Protocol.Network.Cookie[], []>(() =>
+  resolve(join(".", "cookies.json"))
 );
 
 function createGetter<T, A extends any[]>(fileName: (...args: A) => string) {

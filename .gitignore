@@ -16,3 +16,7 @@ credentials.json
 cookies.json
 output.log
 yarn-error.log
+build/*
+deploy/*
+./chromium
+./config.jsonc

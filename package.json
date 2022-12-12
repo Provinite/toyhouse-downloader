@@ -1,7 +1,14 @@
 {
   "name": "@clovercoin/toyhouse-downloader",
   "packageManager": "yarn@4.0.0-rc.32",
+  "scripts": {
+    "build": "rm -rf ./build && tsc",
+    "bundle": "pkg ./build/app.js --no-bytecode --public-packages \"*\" --public --out-dir ./deploy",
+    "start": "ts-node --files src/app.ts"
+  },
   "dependencies": {
+    "chromium": "3.0.3",
+    "jsonc": "^2.0.0",
     "puppeteer": "^19.4.0",
     "winston": "^3.8.2"
   },
@@ -10,6 +17,7 @@
     "@types/prettier": "^2",
     "@yarnpkg/sdks": "^3.0.0-rc.32",
     "chromedriver": "^108.0.0",
+    "pkg": "^5.8.0",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"

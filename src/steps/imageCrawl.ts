@@ -3,6 +3,8 @@ import { Character, characterDetail } from "../util/db";
 import { promises as fs, existsSync } from "fs";
 import { logger } from "../logging";
 import { progressIndicator } from "../util/progressIndicator";
+import { mkdir } from "../util/mkdir";
+import { join, resolve } from "path";
 
 export async function imageCrawl(
   { page }: PreparedBrowser,
@@ -36,12 +38,7 @@ export async function imageCrawl(
       );
       continue;
     }
-    try {
-      await fs.mkdir(`./characters/galleries/${id}/`, { recursive: true });
-    } catch (err: any) {
-      if (err && err.code === "EEXIST") return;
-      throw err;
-    }
+    await mkdir(resolve(join(".", "characters", "galleries", id)));
 
     for (
       let imageIndex = 0;
