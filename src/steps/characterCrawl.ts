@@ -3,11 +3,13 @@ import { logger } from "../logging";
 import { characterPage } from "../toyhouse";
 import { progressIndicator } from "../util/progressIndicator";
 import { Character, characterDetail, DetailedCharacter } from "../util/db";
+import { getConfig } from "../config";
 
 export async function processCharacterCrawl(
   { page }: PreparedBrowser,
   characters: Character[]
 ) {
+  const config = await getConfig();
   for (
     let characterIndex = 0;
     characterIndex < characters.length;
@@ -57,9 +59,11 @@ export async function processCharacterCrawl(
     };
 
     await Promise.all([
-      screenshot(page, {
-        path: `./characters/${id}-profile.jpg`,
-      }),
+      config.profileScreenshots
+        ? screenshot(page, {
+            path: `./characters/${id}-profile.jpg`,
+          })
+        : Promise.resolve(),
       characterDetail.set(id, character),
     ]);
 

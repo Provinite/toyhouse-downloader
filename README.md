@@ -18,7 +18,7 @@ information from toyhou.se to your local computer.
   - Note, if you want to work with multiple toyhouse accounts, you'll probably just want
     to have multiple copies of this entire app. Otherwise, ensure you remove the `cookies.json`,
     and `characters` directory after changing your username.
-- `./lib`
+- `./chromium`
   - Installation point for chromium
 
 ## Generated Files
