@@ -5,6 +5,12 @@ information from toyhou.se to your local computer.
 
 # Quick Start Guide
 
+- Download the appropriate distribution package for your operating system [from the dist folder](https://github.com/Provinite/toyhouse-downloader/tree/main/dist)
+- Extract the files to a folder of your choice
+- Modify `config.jsonc` with a text editor, setting your username and password
+- Run the application
+- Check output.log if anything doesn't work
+
 ## Explanation of files
 
 - `config.jsonc`
