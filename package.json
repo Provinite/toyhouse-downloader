@@ -2,9 +2,11 @@
   "name": "@clovercoin/toyhouse-downloader",
   "packageManager": "yarn@4.0.0-rc.32",
   "scripts": {
-    "build": "rm -rf ./build && tsc",
-    "bundle": "pkg ./build/app.js --no-bytecode --public-packages \"*\" --public --out-dir ./deploy",
-    "start": "ts-node --files src/app.ts"
+    "clean": "rm -rf ./build && rm -rf ./dist",
+    "compile": "tsc",
+    "bundle": "./bundle.sh",
+    "start": "ts-node --files src/app.ts",
+    "build": "./build.sh"
   },
   "dependencies": {
     "chromium": "3.0.3",
