@@ -68,7 +68,7 @@ export async function imageCrawl(
           )} image ${progressIndicator(
             imageIndex,
             character.gallery.images.length
-          )} image ${fileName} already downloaded. Continuing`
+          )} ${fileName} already downloaded. Continuing`
         );
         continue;
       }
