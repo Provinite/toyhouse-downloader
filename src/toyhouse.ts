@@ -7,7 +7,7 @@
  * as they will be stringified and evaluated in another js
  * context.
  */
-import { Field, GalleryImage } from "./util/db";
+import type { Field, GalleryImage } from "./util/db";
 
 /**
  * Utilities for use on the toyhouse homepage
@@ -272,6 +272,87 @@ export const gallery = {
         return el;
       }
       return findAncestorMatching(el.parentElement, selector);
+    }
+  },
+};
+
+export interface FolderTree {
+  name: string;
+  id: string;
+  children: FolderTree[];
+}
+
+export const foldersPage = {
+  parseFolders: () => {
+    const selectors = {
+      folderList: {
+        selector: "form > .sortable",
+        folder: {
+          selector: ":scope > .folder-tree-row",
+          subfolder: ":scope > .sortable > .folder-tree-row",
+          hiddenInput: 'input[name="f[]"]',
+          link: ":scope > div > a",
+        },
+      },
+    } as const;
+
+    const folderList = document.querySelector<HTMLDivElement>(
+      selectors.folderList.selector
+    );
+
+    const rootFolder: FolderTree = {
+      name: "Unsorted",
+      id: "$ROOT",
+      children: [],
+    };
+
+    const folders = folderList!.querySelectorAll(
+      selectors.folderList.folder.selector
+    );
+
+    let numFolders = 1;
+    let resultNodeStack: FolderTree[] = [rootFolder];
+    for (const folder of folders) {
+      crawl(
+        folder,
+        (node) => {
+          numFolders++;
+          const idInput = node.querySelector<HTMLInputElement>(
+            selectors.folderList.folder.hiddenInput
+          );
+          const link = node.querySelector<HTMLAnchorElement>(
+            selectors.folderList.folder.link
+          );
+          const name = link!.textContent!.trim();
+          const parentNode = resultNodeStack.at(-1);
+          const newNode: FolderTree = {
+            name,
+            id: idInput!.value,
+            children: [],
+          };
+          parentNode!.children.push(newNode);
+
+          resultNodeStack.push(newNode);
+        },
+        () => resultNodeStack.pop()
+      );
+    }
+
+    return { rootFolder, numFolders };
+
+    function crawl(
+      root: Element,
+      onEnter: (node: Element) => void = () => {},
+      onExit: (node: Element) => void = () => {}
+    ) {
+      onEnter(root);
+      const children = root.querySelectorAll(
+        selectors.folderList.folder.subfolder
+      );
+      for (const child of children) {
+        crawl(child, onEnter, onExit);
+      }
+      onExit(root);
     }
   },
 };

@@ -1,6 +1,7 @@
 import { promises as fs, existsSync } from "fs";
 import { Protocol } from "puppeteer";
 import { join, resolve } from "path";
+import { FolderTree } from "../toyhouse";
 
 /**
  * Character list database. Provides a lightweight index for
@@ -14,6 +15,19 @@ export interface Character {
   name: string;
   url: string;
   id: string;
+}
+
+export const folderTree = createDb<FolderTree, []>(() =>
+  resolve(join(".", "characters", "folders.json"))
+);
+export function crawlFolderTree(
+  folder: FolderTree,
+  onEnter: (folder: FolderTree) => void = () => {},
+  onExit: (folder: FolderTree) => void = () => {}
+) {
+  onEnter(folder);
+  folder.children.forEach((folder) => crawlFolderTree(folder, onEnter, onExit));
+  onExit(folder);
 }
 
 /**
