@@ -10,19 +10,25 @@ import { getConfig } from "./config";
  * debug logging and loads cookies from cache.
  */
 export async function startup(): Promise<PreparedBrowser> {
+  // install chromium
   const config = await getConfig();
   const chromiumPath = resolve(join(".", "chromium"));
   logger.info(`Installing chromium to ${chromiumPath}`);
   chromiumConfig.BIN_OUT_PATH = chromiumPath;
+  // TODO: Eventually our version of `chromedriver` will
+  // drift from the latest chrome. Need to pin the
+  // chrome revision to use here.
   await chromium.install();
-  logger.info(`Starting chrome from ${chromium.path}`);
 
+  // fire up chromium from the portable install
+  logger.info(`Starting chromium from ${chromium.path}`);
   const browser = await puppeteer.launch({
     args: ["--headless", `--window-size=${config.virtualScreenSize}`],
     defaultViewport: null,
     executablePath: chromium.path,
   });
   const page = await browser.newPage();
+  // attach debug logging
   page.on("domcontentloaded", () => logger.debug(`Navigated to ${page.url()}`));
   const cachedCookies = await browserCookies.get();
 
@@ -32,13 +38,15 @@ export async function startup(): Promise<PreparedBrowser> {
   }
 
   await page.setRequestInterception(true);
-
+  // do not load images by default
   let allowImages: boolean = false;
   const result: PreparedBrowser = {
     browser,
     page,
     setLoadImages: (show: boolean) => (allowImages = show),
   };
+
+  // request interceptor
   page.on("request", (req) => {
     if (req.resourceType() === "image" && !allowImages) {
       req.abort();
@@ -46,6 +54,7 @@ export async function startup(): Promise<PreparedBrowser> {
       req.continue();
     }
   });
+
   return result;
 }
 

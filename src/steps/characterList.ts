@@ -9,8 +9,10 @@ import { Character, characterList } from "../util/db";
 import { progressIndicator } from "../util/progressIndicator";
 
 /**
+ * [Character List] step
  * Generate a character list. Expects browser to be on
- * the toyhouse homepage and logged in.
+ * the toyhouse homepage and logged in. Sets up the lightweight
+ * characterlist db entry for consumption by other processes.
  * @param page
  */
 export async function processCharacterList(page: Page) {

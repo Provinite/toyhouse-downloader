@@ -9,6 +9,9 @@ import { browserCookies, characterList } from "./util/db";
 import { imageCrawl } from "./steps/imageCrawl";
 import { mkdir } from "./util/mkdir";
 import { resolve, join } from "path";
+/**
+ * Toyhouse downloader entry point.
+ */
 async function main() {
   let browser: PreparedBrowser | undefined;
   try {

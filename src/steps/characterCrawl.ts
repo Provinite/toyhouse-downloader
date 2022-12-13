@@ -5,6 +5,14 @@ import { progressIndicator } from "../util/progressIndicator";
 import { Character, characterDetail, DetailedCharacter } from "../util/db";
 import { getConfig } from "../config";
 
+/**
+ * [Character Crawl] step
+ * Iterates through the character list, creating character
+ * detail entries for each character, as well as profile
+ * screenshots.
+ * @param browser
+ * @param characters
+ */
 export async function processCharacterCrawl(
   { page }: PreparedBrowser,
   characters: Character[]
@@ -15,24 +23,17 @@ export async function processCharacterCrawl(
     characterIndex < characters.length;
     characterIndex++
   ) {
+    const progress = progressIndicator(characterIndex, characters.length);
     const { url, id, name } = characters[characterIndex];
 
     if (characterDetail.exists(id)) {
       logger.info(
-        `${progressIndicator(
-          characterIndex,
-          characters.length
-        )} Character metadata for ${name} (${id}) already cached. Continuing`
+        `${progress} Character metadata for ${name} (${id}) already cached. Continuing`
       );
       continue;
     }
 
-    logger.info(
-      `${progressIndicator(
-        characterIndex,
-        characters.length
-      )} Crawling character`
-    );
+    logger.info(`${progress} Crawling character`);
     const nav = page.goto(url, { waitUntil: "networkidle2" });
 
     await nav;
@@ -68,7 +69,7 @@ export async function processCharacterCrawl(
     ]);
 
     logger.info(
-      `Saved character metadata for ${character.name} (${
+      `${progress} Saved ${character.name} (${
         character.id
       }) to ${characterDetail.fileName(id)} ${
         character.fields.length

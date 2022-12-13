@@ -6,6 +6,13 @@ import { progressIndicator } from "../util/progressIndicator";
 import { mkdir } from "../util/mkdir";
 import { join, resolve } from "path";
 
+/**
+ * [Image Crawl] step
+ * Processes gallery entries in all character details, downloading any
+ * images that have not yet been downloaded.
+ * @param browser
+ * @param characters
+ */
 export async function imageCrawl(
   { page }: PreparedBrowser,
   characters: Character[]
@@ -83,10 +90,21 @@ export async function imageCrawl(
   }
 }
 
+/**
+ * Get the filename from a url.
+ * @param url
+ * @returns The last url segment, excluding query
+ */
 function getFileName(url: string) {
   return url.substring(url.lastIndexOf("/") + 1).split("?")[0];
 }
 
+/**
+ * Determine if a file name is acceptable to save.
+ * @param str
+ * @returns True if string is alphanumeric possibly with underscores,
+ * dashes, and periods.
+ */
 function isValidFileName(str: string) {
   return /[a-zA-Z0-9_.-]/.test(str);
 }
