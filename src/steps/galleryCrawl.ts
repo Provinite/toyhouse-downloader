@@ -4,6 +4,12 @@ import { gallery } from "../toyhouse";
 import { progressIndicator } from "../util/progressIndicator";
 import { Character, characterDetail } from "../util/db";
 
+/**
+ * [Gallery Crawl] step.
+ * Augments all character detail entries with gallery information.
+ * @param browser
+ * @param characters
+ */
 export async function processGalleryCrawl(
   { page }: PreparedBrowser,
   characters: Character[]
