@@ -1,3 +1,7 @@
+# 0.2.1-beta
+
+- Add README.md to dist bundles
+
 # 0.2.0-beta
 
 - Add folder tree download
