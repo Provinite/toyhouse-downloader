@@ -16,11 +16,14 @@ to your local computer.
 # Quick Start Guide
 
 - Download the appropriate zip file for your operating system [from the dist folder](https://github.com/Provinite/toyhouse-downloader/tree/main/dist)
+  - [windows](https://github.com/Provinite/toyhouse-downloader/blob/main/dist/thdownloader-windows-x64.zip)
+  - [linux](https://github.com/Provinite/toyhouse-downloader/blob/main/dist/thdownloader-linux-x64.zip)
+  - [macos](https://github.com/Provinite/toyhouse-downloader/blob/main/dist/thdownloader-macos-x64.zip)
 - Unzip the files to a folder of your choice
 - Modify `config.jsonc` with a text editor (like notepad), setting your username and password
 - Run the executable (the other file that isn't the config file)
 - Check output.log if anything doesn't work
-- See the files section below for an explanation of output
+- See the [files section](https://github.com/Provinite/toyhouse-downloader#explanation-of-files) below for an explanation of output
 
 ## Notes
 
