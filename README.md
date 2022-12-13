@@ -28,6 +28,8 @@ information from toyhou.se to your local computer.
 - `cookies.json`
   - cached cookies storing your toyhouse session between runs.
   - Delete this file to log in fresh
+- `characters/folders.json`
+  - A tree structure of all folders in your toyhouse account
 - `characters/characters.json`
   - list of all of your characters ids, names, and links
   - Delete this file to reload the character list
