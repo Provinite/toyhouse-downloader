@@ -1,3 +1,10 @@
+# 0.2.0-beta
+
+- Add folder tree download
+- Add config validation
+- Various documentation and logging improvements
+- Remove remaining hardcoded linux-style paths
+
 # 0.1.1-beta
 
 - Fix a bug where profileScreenshots setting is ignored

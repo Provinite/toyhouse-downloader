@@ -1,4 +1,12 @@
 import { createLogger, transports, format } from "winston";
+import { padRight } from "./util/padString";
+
+const printf = (info: any) =>
+  ` [${info.label}][${info.timestamp}] ${padRight(
+    info[Symbol.for("level")],
+    6
+  )}: ${info.message}`;
+
 export const logger = createLogger({
   level: "debug",
   transports: [
@@ -13,13 +21,7 @@ export const logger = createLogger({
         format.timestamp({
           format: "HH:mm:ss",
         }),
-        format.printf(
-          (info: any) =>
-            ` [${info.label}][${info.timestamp}] ${space(
-              info[Symbol.for("level")],
-              6
-            )}: ${info.message}`
-        )
+        format.printf(printf)
       ),
     }),
     new transports.File({
@@ -31,18 +33,8 @@ export const logger = createLogger({
         format.timestamp({
           format: "HH:mm:ss",
         }),
-        format.printf(
-          (info: any) =>
-            ` [${info.label}][${info.timestamp}] ${space(
-              info[Symbol.for("level")],
-              6
-            )}: ${info.message}`
-        )
+        format.printf(printf)
       ),
     }),
   ],
 });
-
-function space(str: string, len: number) {
-  return `${str}${" ".repeat(Math.max(0, len - str.length))}`;
-}

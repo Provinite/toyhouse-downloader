@@ -17,5 +17,5 @@ cookies.json
 output.log
 yarn-error.log
 build
-./chromium
-./config.jsonc
+chromium
+config.jsonc

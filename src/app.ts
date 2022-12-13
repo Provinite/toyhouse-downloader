@@ -9,6 +9,11 @@ import { browserCookies, characterList } from "./util/db";
 import { imageCrawl } from "./steps/imageCrawl";
 import { mkdir } from "./util/mkdir";
 import { resolve, join } from "path";
+import { processFolderList } from "./steps/folderList";
+import { homePage } from "./toyhouse";
+/**
+ * Toyhouse downloader entry point.
+ */
 async function main() {
   let browser: PreparedBrowser | undefined;
   try {
@@ -23,20 +28,24 @@ async function main() {
   | Stages:                                                          |
   |  - [Startup]: Initial startup                                    |
   |  - [Login]: Load toyhouse homepage and login                     |
+  |  - [Folder List]: Load a list of all folders                     |
   |  - [Character List]: Download a list of all of your characters   |
-  |  - [Character Crawl]: Download character details and image links |
+  |  - [Character Crawl]: Download character details                 |
   |  - [Gallery Crawl]: Download all gallery image metadata          |
   |  - [Image Crawl]: Download all images                            |
   |  - [Shutdown]: Final cleanup                                     |
   ====================================================================`);
     browser = await startup();
+
     logger.info("[Login]");
-    logger.info("Started chrome headless browser");
     await loginToToyhouse(browser.page);
 
     const cookies = await browser.page.cookies();
     logger.info(`Caching ${cookies.length} cookies`);
     await browserCookies.set(cookies);
+
+    logger.info("[Folder List]");
+    await processFolderList(browser);
 
     logger.info("[Character List]");
     let characters = await characterList.get();
