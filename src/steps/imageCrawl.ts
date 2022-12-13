@@ -23,15 +23,7 @@ export async function imageCrawl(
     characterIndex < characters.length;
     characterIndex++
   ) {
-    const progressPad =
-      `${progressIndicator(
-        characterIndex,
-        characters.length
-      )} ${progressIndicator(0, 100)}`.length * 0;
-    const outerProgress = padRight(
-      progressIndicator(characterIndex, characters.length),
-      progressPad
-    );
+    const outerProgress = progressIndicator(characterIndex, characters.length);
 
     const { id, name } = characters[characterIndex];
     const character = await characterDetail.get(id);
@@ -56,13 +48,10 @@ export async function imageCrawl(
       imageIndex < character.gallery.images.length;
       imageIndex++
     ) {
-      const innerProgress = padRight(
-        `${progressIndicator(
-          characterIndex,
-          characters.length
-        )} ${progressIndicator(imageIndex, character.gallery.images.length)}`,
-        progressPad
-      );
+      const innerProgress = `${progressIndicator(
+        characterIndex,
+        characters.length
+      )} ${progressIndicator(imageIndex, character.gallery.images.length)}`;
 
       const image = character.gallery.images[imageIndex];
 
