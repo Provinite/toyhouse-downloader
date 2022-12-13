@@ -200,14 +200,14 @@ export const gallery = {
         imageLink: ":scope > .thumb-image > a.img-thumbnail",
         /** Credits container box */
         credits: {
-          selector: ".image-credit",
+          selector: ".image-credits",
           /** A single credit line */
           credit: ".artist-credit",
           /** Image upload date container */
           uploadDate: ":scope > .mb-1:first-of-type",
         },
       },
-    };
+    } as const;
 
     const result: GalleryImage[] = [];
 
@@ -221,16 +221,17 @@ export const gallery = {
 
       const creditsContainer = galleryItem.querySelector(
         selectors.galleryItem.credits.selector
-      )!;
-      const uploadDate = creditsContainer.querySelector(
+      );
+
+      const uploadDate = creditsContainer!.querySelector(
         selectors.galleryItem.credits.uploadDate
       )!.textContent!;
+
       const credits = [
-        ...creditsContainer.querySelectorAll(
+        ...creditsContainer!.querySelectorAll(
           selectors.galleryItem.credits.credit
         ),
       ].map((e) => e.innerHTML.trim());
-
       const containingGallery = findAncestorMatching(
         galleryItem,
         selectors.subgallery.selector
