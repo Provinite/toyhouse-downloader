@@ -19,7 +19,7 @@ export async function processCharacterList(page: Page) {
   // navigate to the user's all characters page
   const profileLink = await page.evaluate(homePage.getNavLinkUrl, "Profile");
   await page.goto(`${profileLink}/characters/folder:all?page=1`, {
-    waitUntil: "networkidle2",
+    waitUntil: "domcontentloaded",
   });
 
   const pageCount = await page.evaluate(allCharacterList.getPageCount);
@@ -28,13 +28,15 @@ export async function processCharacterList(page: Page) {
   const characters: Character[] = [];
 
   for (let currentPage = 1; currentPage <= pageCount; currentPage++) {
+    const sleep = new Promise((res) => setTimeout(res, 200));
     if (currentPage > 1) {
       await page.goto(
         `${profileLink}/characters/folder:all?page=${currentPage}`,
         {
-          waitUntil: "networkidle2",
+          waitUntil: "domcontentloaded",
         }
       );
+      await page.evaluate(() => window.stop());
     }
     const charactersOnPage = await page.evaluate(
       allCharacterList.getCharactersFromPage
@@ -55,6 +57,7 @@ export async function processCharacterList(page: Page) {
       }
       characters.push({ ...c, id });
     });
+    await sleep;
   }
 
   await characterList.set(characters);

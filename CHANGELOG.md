@@ -1,3 +1,7 @@
+# 0.2.2-beta
+
+- Drastically speed up character list fetching
+
 # 0.2.1-beta
 
 - Add README.md to dist bundles
