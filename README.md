@@ -44,6 +44,18 @@ to your local computer.
   this means that data provided is only transmitted to toyhouse (like your login
   information).
 
+## FAQ
+
+- Q: How do I pause and resume this process?
+  - A: Simply kill the program. Each time you run the tool, it will evaluate which steps have already been
+    completed, and skip any unnecessary re-downloading. It should only take a couple
+    of seconds to restart a run from where it was (roughly). Certain steps must complete
+    fully to be saved, while others have incremental progress tracking.
+- Q: How do I make the tool redownload everything?
+  - A: Delete or rename the `characters` folder, and the `cookies.json` file
+- Q: It just closed, how do I know if it finished or crashed?
+  - A: Check out the `output.log` file to get full details of every single thing done
+
 ### Explanation of files
 
 - `config.jsonc`
