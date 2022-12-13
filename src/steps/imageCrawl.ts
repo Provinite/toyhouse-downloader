@@ -5,6 +5,7 @@ import { logger } from "../logging";
 import { progressIndicator } from "../util/progressIndicator";
 import { mkdir } from "../util/mkdir";
 import { join, resolve } from "path";
+import { padRight } from "../util/padString";
 
 /**
  * [Image Crawl] step
@@ -22,14 +23,20 @@ export async function imageCrawl(
     characterIndex < characters.length;
     characterIndex++
   ) {
-    const { id, name } = characters[characterIndex];
-    const character = await characterDetail.get(id);
-    logger.info(
+    const progressPad =
       `${progressIndicator(
         characterIndex,
         characters.length
-      )} Processing character gallery images for ${name} (${id})`
+      )} ${progressIndicator(0, 100)}`.length * 0;
+    const outerProgress = padRight(
+      progressIndicator(characterIndex, characters.length),
+      progressPad
     );
+
+    const { id, name } = characters[characterIndex];
+    const character = await characterDetail.get(id);
+
+    logger.info(`${outerProgress} Start ${name} (${id})`);
     if (!character || !character.gallery) {
       throw new Error(
         `Character ${name} (${id}) gallery metadata not found during image crawl`
@@ -38,10 +45,7 @@ export async function imageCrawl(
 
     if (!character.gallery.images.length) {
       logger.info(
-        `${progressIndicator(
-          characterIndex,
-          characters.length
-        )} No images found for character ${name} (${id}). Continuing`
+        `${outerProgress} No images found for character ${name} (${id}). Continuing`
       );
       continue;
     }
@@ -52,6 +56,14 @@ export async function imageCrawl(
       imageIndex < character.gallery.images.length;
       imageIndex++
     ) {
+      const innerProgress = padRight(
+        `${progressIndicator(
+          characterIndex,
+          characters.length
+        )} ${progressIndicator(imageIndex, character.gallery.images.length)}`,
+        progressPad
+      );
+
       const image = character.gallery.images[imageIndex];
 
       const fileName = getFileName(image.url);
@@ -59,17 +71,11 @@ export async function imageCrawl(
         throw new Error(`Invalid file name: ${fileName} in gallery`);
       }
 
-      const fullFileName = `./characters/galleries/${id}/${fileName}`;
+      const fullFileName = resolve(
+        join(".", "characters", "galleries", id, fileName)
+      );
       if (existsSync(fullFileName)) {
-        logger.info(
-          `${progressIndicator(
-            characterIndex,
-            characters.length
-          )} image ${progressIndicator(
-            imageIndex,
-            character.gallery.images.length
-          )} ${fileName} already downloaded. Continuing`
-        );
+        logger.info(`${innerProgress} Already downloaded ${fileName}`);
         continue;
       }
       const response = await page.goto(image.url, {
@@ -77,15 +83,7 @@ export async function imageCrawl(
       });
 
       await fs.writeFile(fullFileName, await response!.buffer());
-      logger.info(
-        `${progressIndicator(
-          characterIndex,
-          characters.length
-        )} image ${progressIndicator(
-          imageIndex,
-          character.gallery.images.length
-        )} Saved ${fileName} to ${fullFileName}`
-      );
+      logger.info(`${innerProgress} Saved ${fileName} to ${fullFileName}`);
     }
   }
 }
