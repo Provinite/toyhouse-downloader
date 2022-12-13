@@ -12,7 +12,7 @@ import { padLeft } from "./padString";
 export function progressIndicator(
   index: number,
   max: number,
-  offset: number = 0
+  offset: number = 1
 ) {
   const indexString = (index + offset).toString();
   const displayIndex = padLeft(indexString, max.toString().length, "0");
