@@ -4,6 +4,7 @@ import { resolve, join } from "path";
 export interface Config {
   username: string;
   password: string;
+  bumpFolderUrl: string;
   profileScreenshots: boolean;
   profileScreenshotQuality: number;
   virtualScreenSize: string;
@@ -32,6 +33,7 @@ const validationConfig: Record<keyof Config, (val: any) => void> = {
   profileScreenshots: validateProfileScreenshots,
   profileScreenshotQuality: validateProfileScreenshotQuality,
   virtualScreenSize: validateVirtualScreenSize,
+  bumpFolderUrl: validateBumpFolderUrl,
 };
 
 function validateConfig(config: any) {
@@ -108,6 +110,10 @@ function validateVirtualScreenSize(virtualScreenSize: any) {
         `Invalid "virtualScreenSize" setting. Must be a string with a format like "1920,1080"`
       )
   );
+}
+
+function validateBumpFolderUrl(bumpFolderUrl: any) {
+  assert(isString(bumpFolderUrl));
 }
 
 const isType = (type: TypeOfResult, val: any) => {

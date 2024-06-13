@@ -17,6 +17,24 @@ import type { Field, GalleryImage } from "./util/db";
 export const homePage = {
   /** Selector for the username field in the login dialog */
   usernameFieldSelector: "input[name=username]",
+  setUsername(username: string) {
+    const usernameField = document.querySelector(
+      "input[name=username]" as "input"
+    );
+    usernameField!.value = username;
+  },
+  setPassword(password: string) {
+    const passwordField = document.querySelector(
+      "input[name=password]" as "input"
+    );
+    passwordField!.value = password;
+  },
+  clickLogin() {
+    const signInButton = document.querySelector(
+      "input[type=submit]" as "input"
+    );
+    signInButton!.click();
+  },
   /**
    * Log in to toyhouse using the provided credentials
    * @param username
@@ -29,9 +47,12 @@ export const homePage = {
     const passwordField = document.querySelector(
       "input[name=password]" as "input"
     );
+    const signInButton = document.querySelector(
+      "input[type=submit]" as "input"
+    );
     usernameField!.value = username;
     passwordField!.value = password;
-    usernameField!.form!.submit();
+    signInButton!.click();
   },
   /**
    * Determine if the user is currently logged in or not.
@@ -172,6 +193,30 @@ export const characterPage = {
   },
 };
 
+export const characterTradeListingConfigPage = {
+  isForCashSale: () => {
+    const selectors = {
+      checkbox: `input[name=is_sale_usd]`,
+    };
+    const el = document.querySelector<HTMLInputElement>(selectors.checkbox);
+    if (!el) {
+      throw new Error(`Could not find: ${selectors.checkbox}`);
+    }
+    return el.checked === true;
+  },
+  markForCashSale: (forSale: boolean) => {
+    const selectors = {
+      checkbox: `input[name=is_sale_usd]`,
+    };
+    const el = document.querySelector<HTMLInputElement>(selectors.checkbox);
+    if (!el) {
+      throw new Error(`Could not find: ${selectors.checkbox}`);
+    }
+    el.checked = forSale;
+    el.form!.requestSubmit();
+  },
+};
+
 /**
  * Utilities intended to be run on the toyhouse character
  * gallery page.
@@ -273,6 +318,44 @@ export const gallery = {
       }
       return findAncestorMatching(el.parentElement, selector);
     }
+  },
+};
+
+/**
+ * Utilities intended to be run on the toyhouse folder page
+ */
+export const folderPage = {
+  getCharacterList: () => {
+    const selectors = {
+      character: {
+        selector: ".gallery-thumb.character-thumb.gallery-item",
+        hiddenButton: ":scope .thumb-character-name .fa.fa-times-circle",
+        link: ":scope .thumb-image > a",
+      },
+    };
+    const characterGalleryItems = document.querySelectorAll(
+      selectors.character.selector
+    );
+    return [...characterGalleryItems].map((galleryItem, i) => {
+      const isHidden = Boolean(
+        galleryItem.querySelector(selectors.character.hiddenButton)
+      );
+      const url = galleryItem.querySelector<HTMLAnchorElement>(
+        selectors.character.link
+      )?.href;
+
+      if (!url) {
+        throw new Error("Error reading url for character " + i);
+      }
+
+      const id = url.split(".").at(-2)?.split("/").at(-1);
+
+      if (!id) {
+        throw new Error(`Error parsing id for character ${i} (${url})`);
+      }
+
+      return { isHidden, url, id, name: url.split(".").at(-1)! };
+    });
   },
 };
 

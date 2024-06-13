@@ -6,23 +6,5 @@
    * use "password": "no\"quotes\"here", if your password is no"quotes"here
    */
   "password": "YOUR_TOYHOUSE_PASSWORD",
-  /**
-   * Controls whether or not profile screenshots are generated.
-   * true: create fullpage screenshots for each profile
-   * false: no screenshots
-   */
-  "profileScreenshots": true,
-  /**
-   * Profile screenshot image jpeg quality.
-   * Must be a whole number from 1 to 100.
-   * 100 is highest quality and largest file size
-   */
-  "profileScreenshotQuality": 50,
-  /**
-   * The size of the virtual screen to use when creating screenshots.
-   * Screenshots are all full-page, so height isn't very important.
-   * Adjust this value to another common resolution to adjust the
-   * width of screenshots
-   */
-  "virtualScreenSize": "1920,1080"
+  "bumpFolderUrl": "https://toyhou.se/YOUR_TOYHOUSE_USERNAME/characters/folder:YOUR_FOLDER_ID"
 }
