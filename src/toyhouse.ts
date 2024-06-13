@@ -17,6 +17,24 @@ import type { Field, GalleryImage } from "./util/db";
 export const homePage = {
   /** Selector for the username field in the login dialog */
   usernameFieldSelector: "input[name=username]",
+  setUsername(username: string) {
+    const usernameField = document.querySelector(
+      "input[name=username]" as "input"
+    );
+    usernameField!.value = username;
+  },
+  setPassword(password: string) {
+    const passwordField = document.querySelector(
+      "input[name=password]" as "input"
+    );
+    passwordField!.value = password;
+  },
+  clickLogin() {
+    const signInButton = document.querySelector(
+      "input[type=submit]" as "input"
+    );
+    signInButton!.click();
+  },
   /**
    * Log in to toyhouse using the provided credentials
    * @param username
@@ -29,9 +47,12 @@ export const homePage = {
     const passwordField = document.querySelector(
       "input[name=password]" as "input"
     );
+    const signInButton = document.querySelector(
+      "input[type=submit]" as "input"
+    );
     usernameField!.value = username;
     passwordField!.value = password;
-    usernameField!.form!.submit();
+    signInButton!.click();
   },
   /**
    * Determine if the user is currently logged in or not.
@@ -59,7 +80,6 @@ export const homePage = {
     return null;
   },
 };
-
 /**
  * Utilities for use on the "view all" character list page.
  *
