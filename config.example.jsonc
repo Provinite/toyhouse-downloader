@@ -6,5 +6,10 @@
    * use "password": "no\"quotes\"here", if your password is no"quotes"here
    */
   "password": "YOUR_TOYHOUSE_PASSWORD",
+  /*
+   * A folder (that YOU OWN) that you intend to bump all of the characters in.
+   * You can grab this by visiting your for sale folder and grabbing the URL
+   * from your browser.
+   */
   "bumpFolderUrl": "https://toyhou.se/YOUR_TOYHOUSE_USERNAME/characters/folder:YOUR_FOLDER_ID"
 }
