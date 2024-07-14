@@ -30,9 +30,7 @@ export const homePage = {
     passwordField!.value = password;
   },
   clickLogin() {
-    const signInButton = document.querySelector(
-      "input[type=submit]" as "input"
-    );
+    const signInButton = document.querySelector("#login-btn" as "input");
     signInButton!.click();
   },
   /**
@@ -47,9 +45,7 @@ export const homePage = {
     const passwordField = document.querySelector(
       "input[name=password]" as "input"
     );
-    const signInButton = document.querySelector(
-      "input[type=submit]" as "input"
-    );
+    const signInButton = document.querySelector("login-btn" as "input");
     usernameField!.value = username;
     passwordField!.value = password;
     signInButton!.click();
