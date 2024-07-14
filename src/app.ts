@@ -10,14 +10,24 @@ import { imageCrawl } from "./steps/imageCrawl";
 import { mkdir } from "./util/mkdir";
 import { resolve, join } from "path";
 import { processFolderList } from "./steps/folderList";
-import { homePage } from "./toyhouse";
+import { screenshot } from "./browser";
 /**
  * Toyhouse downloader entry point.
  */
 async function main() {
   let browser: PreparedBrowser | undefined;
+  let currentStep: string | undefined;
+  const beginStep = (stepName?: string) => {
+    if (currentStep) {
+      logger.info(`[${currentStep}]: Finished`);
+    }
+    currentStep = stepName;
+    if (currentStep) {
+      logger.info(`[${currentStep}]: Start`);
+    }
+  };
   try {
-    logger.info("[Startup]");
+    beginStep("Startup");
     await mkdir(resolve(join(".", "characters")));
     logger.info(`
   ====================================================================
@@ -37,17 +47,17 @@ async function main() {
   ====================================================================`);
     browser = await startup();
 
-    logger.info("[Login]");
+    beginStep("Login");
     await loginToToyhouse(browser.page);
 
     const cookies = await browser.page.cookies();
     logger.info(`Caching ${cookies.length} cookies`);
     await browserCookies.set(cookies);
 
-    logger.info("[Folder List]");
+    beginStep("Folder List");
     await processFolderList(browser);
 
-    logger.info("[Character List]");
+    beginStep("Character List");
     let characters = await characterList.get();
     if (!characters) {
       logger.info(`No character cache found, generating character list`);
@@ -59,25 +69,42 @@ async function main() {
       logger.error(`Error fetching characters, or no characters found.`);
     }
 
-    logger.info("[Character Crawl]");
+    beginStep("Character Crawl");
     browser.setLoadImages(true);
     await processCharacterCrawl(browser, characters);
     browser.setLoadImages(false);
 
-    logger.info("[Gallery Crawl]");
+    beginStep("Gallery Crawl");
     await processGalleryCrawl(browser, characters);
 
-    logger.info("[Image Crawl]");
+    beginStep("Image Crawl");
     await imageCrawl(browser, characters);
 
-    logger.info("[Shutdown]");
+    beginStep("Shutdown");
     await shutdown(browser);
+
+    // kludge to log a final end message
+    beginStep();
   } catch (err: any) {
     logger.error(`Fatal error during downloading process`);
+    logger.error(`Last step was [${currentStep}]`);
+    logger.error("---- Debugging Details -----");
+    logger.error(err.message);
     logger.error(err);
     logger.error(err?.stack);
+    logger.error("----------------------------");
 
     if (browser) {
+      logger.error("Capturing debug screenshot to download-failed.jpg");
+      try {
+        await screenshot(browser.page, { path: "./download-failed.jpg" });
+      } catch (err: any) {
+        logger.error("Error attempting to capture screenshot");
+        logger.error(err.message);
+        logger.error(err);
+        logger.error(err?.stack);
+      }
+      logger.error("Terminating");
       await shutdown(browser);
     }
   }
