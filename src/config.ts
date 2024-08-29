@@ -5,8 +5,6 @@ export interface Config {
   username: string;
   password: string;
   bumpFolderUrl: string;
-  profileScreenshots: boolean;
-  profileScreenshotQuality: number;
   virtualScreenSize: string;
 }
 
@@ -30,8 +28,6 @@ export async function getConfig(): Promise<Config> {
 const validationConfig: Record<keyof Config, (val: any) => void> = {
   username: validateUsername,
   password: validatePassword,
-  profileScreenshots: validateProfileScreenshots,
-  profileScreenshotQuality: validateProfileScreenshotQuality,
   virtualScreenSize: validateVirtualScreenSize,
   bumpFolderUrl: validateBumpFolderUrl,
 };

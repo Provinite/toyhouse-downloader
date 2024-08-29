@@ -19,3 +19,5 @@ yarn-error.log
 build
 chromium
 config.jsonc
+*.jsonc
+!*.example.jsonc

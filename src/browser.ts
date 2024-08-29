@@ -28,6 +28,16 @@ export async function startup(): Promise<PreparedBrowser> {
     executablePath: chromium.path,
   });
   const page = await browser.newPage();
+  const originalEvaluate = page.evaluate.bind(page);
+  page.evaluate = (fn, ...args) => {
+    return originalEvaluate(fn, ...args).catch((err) => {
+      logger.error(
+        `Error during browser function evaluation: ${(fn as any).name}`
+      );
+      logger.error(err.message);
+      throw err;
+    });
+  };
   await page.setUserAgent(
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
   );
@@ -81,7 +91,6 @@ export async function screenshot(page: Page, options: ScreenshotOptions = {}) {
   return page.screenshot({
     type: "jpeg",
     fullPage: true,
-    quality: config.profileScreenshotQuality,
     ...options,
   });
 }

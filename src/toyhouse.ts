@@ -30,28 +30,7 @@ export const homePage = {
     passwordField!.value = password;
   },
   clickLogin() {
-    const signInButton = document.querySelector(
-      "input[type=submit]" as "input"
-    );
-    signInButton!.click();
-  },
-  /**
-   * Log in to toyhouse using the provided credentials
-   * @param username
-   * @param password
-   */
-  login: (username: string, password: string) => {
-    const usernameField = document.querySelector(
-      "input[name=username]" as "input"
-    );
-    const passwordField = document.querySelector(
-      "input[name=password]" as "input"
-    );
-    const signInButton = document.querySelector(
-      "input[type=submit]" as "input"
-    );
-    usernameField!.value = username;
-    passwordField!.value = password;
+    const signInButton = document.querySelector("#login-btn" as "button");
     signInButton!.click();
   },
   /**
