@@ -35,5 +35,5 @@ echo [ThDU] Update archive unpacked
 echo [ThDU] Deleting update archive "%~1"
 del "%~1"
 
-echo Update complete, please relaunch the updater. Press any key to exit...
+echo Update complete, please relaunch the downloader. Press any key to exit...
 pause

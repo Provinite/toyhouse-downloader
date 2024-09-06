@@ -109,9 +109,9 @@ export async function downloadLatestRelease(platform: Platform) {
   }
   const branch = pkg.toyHouseDownloader.branch || "main";
   const binaryName = {
-    [Platform.Windows]: "thdownloader-windows-x64.zip",
-    [Platform.Linux]: "thdownloader-linux-x64.zip",
-    [Platform.Macos]: "thdownloader-macos-x64.zip",
+    [Platform.Windows]: "toyhouse-downloader-win-x64.zip",
+    [Platform.Linux]: "toyhouse-downloader-linux-x64.zip",
+    [Platform.Macos]: "toyhouse-downloader-macos-x64.zip",
   }[platform];
   if (!binaryName) {
     throw new Error("Unrecognized platform. No binary available for download.");
