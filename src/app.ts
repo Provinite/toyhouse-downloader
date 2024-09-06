@@ -1,21 +1,28 @@
 import { PreparedBrowser, shutdown, startup } from "./browser";
-import { processCharacterList } from "./steps/characterList";
 
 import { logger } from "./logging";
-import { processCharacterCrawl } from "./steps/characterCrawl";
 import { loginToToyhouse } from "./toyhouse.puppeteer";
-import { processGalleryCrawl } from "./steps/galleryCrawl";
-import { browserCookies, characterList } from "./util/db";
-import { imageCrawl } from "./steps/imageCrawl";
+import { browserCookies } from "./util/db";
 import { mkdir } from "./util/mkdir";
 import { resolve, join } from "path";
-import { processFolderList } from "./steps/folderList";
-import { homePage } from "./toyhouse";
 import { processReadFolder } from "./steps/readFolder";
+import {
+  applyUpdate,
+  cleanupUpdateScript,
+  promptForAutoUpdate,
+} from "./updater/update";
 /**
  * Toyhouse downloader entry point.
  */
 async function main() {
+  // auto update
+  await cleanupUpdateScript();
+  if (await promptForAutoUpdate()) {
+    return applyUpdate();
+  }
+  if (Math.random() < 2) {
+    throw new Error("WHOOP");
+  }
   let browser: PreparedBrowser | undefined;
   try {
     logger.info("[Startup]");
@@ -45,31 +52,8 @@ async function main() {
     logger.info("[Read Folder]");
     await processReadFolder(browser);
 
-    // logger.info("[Character List]");
-    // let characters = await characterList.get();
-    // if (!characters) {
-    //   logger.info(`No character cache found, generating character list`);
-    //   characters = await processCharacterList(browser.page);
-    // } else {
-    //   logger.info(`Loaded ${characters.length} chracters from cache`);
-    // }
-    // if (!characters || !characters.length) {
-    //   logger.error(`Error fetching characters, or no characters found.`);
-    // }
-
-    // logger.info("[Character Crawl]");
-    // browser.setLoadImages(true);
-    // await processCharacterCrawl(browser, characters);
-    // browser.setLoadImages(false);
-
-    // logger.info("[Gallery Crawl]");
-    // await processGalleryCrawl(browser, characters);
-
-    // logger.info("[Image Crawl]");
-    // await imageCrawl(browser, characters);
-
-    // logger.info("[Shutdown]");
-    // await shutdown(browser);
+    logger.info("[Shutdown]");
+    await shutdown(browser);
   } catch (err: any) {
     logger.error(`Fatal error during downloading process`);
     logger.error(err);
@@ -81,4 +65,11 @@ async function main() {
   }
 }
 
-main();
+main().catch((err) => {
+  logger.error("Fatal error during run");
+  logger.error("Name: " + err.name);
+  logger.error("Error Kind: " + err.constructor.name);
+  logger.error("Message: " + err.message);
+  logger.error(err.stack);
+  process.exitCode = 1;
+});

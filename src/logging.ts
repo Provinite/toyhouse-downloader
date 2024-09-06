@@ -8,7 +8,7 @@ const printf = (info: any) =>
   )}: ${info.message}`;
 
 export const logger = createLogger({
-  level: "debug",
+  level: "info",
   transports: [
     new transports.Console({
       format: format.combine(

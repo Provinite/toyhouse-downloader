@@ -4,9 +4,10 @@
   "version": "1.0.0-bumpbot",
   "private": true,
   "repository": "github:provinite/toyhouse-downloader",
+  "bin": "./build/src/app.js",
   "scripts": {
     "clean": "rm -rf ./build && rm -rf ./dist",
-    "compile": "tsc",
+    "compile": "./compile.sh",
     "bundle": "./bundle.sh",
     "start": "ts-node --files src/app.ts",
     "build": "./build.sh"
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/chromedriver": "^81.0.1",
     "@types/jest": "^29.5.12",
+    "@types/node": "22.5.4",
     "@types/prettier": "^2",
     "@yarnpkg/sdks": "^3.0.0-rc.32",
     "chromedriver": "^108.0.0",
@@ -32,5 +34,8 @@
   },
   "toyHouseDownloader": {
     "branch": "bumpbot"
+  },
+  "pkg": {
+    "outputPath": "dist"
   }
 }

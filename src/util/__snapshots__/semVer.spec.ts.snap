@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`semVer parseSemVer throws for "1" 1`] = `"Invalid semantic version: 1"`;
+
+exports[`semVer parseSemVer throws for "1.2" 1`] = `"Invalid semantic version: 1.2"`;
+
+exports[`semVer parseSemVer throws for "1.2.alpha" 1`] = `"Invalid semantic version: 1.2.alpha"`;
+
+exports[`semVer parseSemVer throws for "24.beta" 1`] = `"Invalid semantic version: 24.beta"`;
+
+exports[`semVer parseSemVer throws for "prerelease" 1`] = `"Invalid semantic version: prerelease"`;

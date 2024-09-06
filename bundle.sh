@@ -1,15 +1,40 @@
 #!/bin/bash
-yarn pkg ./build/app.js --no-bytecode --public-packages \"*\" --public --out-dir ./dist
-cp config.example.jsonc ./dist/config.jsonc
-cp README.md ./dist/README.md
+# Bundle the (already-built) application for distribution
+# uses npm `pkg` package to create a standalone executable
+# which bundles application code, node.js runtime, dependencies,
+# and a few other static assets into a single executable file
+# for each supported platform.
+# This script is intended to be run after `compile.sh` script.
+#
+# Preconditions: A runnable instance of the app is already built
+# in the `build` directory.
+#
+# Postconditions: The `dist` folder contains a zip file for each
+# supported platform, containing the standalone executable and other
+# external assets intended for humans to work with (readme, config file).
+#
+# Note: This script depends on several pkg config options defined in `package.json`
+# Supported platforms: macos, linux, win
+# Supported architecture: x64
 
-mv ./dist/app-linux ./dist/thdownloader-linux-x64
-mv ./dist/app-macos ./dist/thdownloader-macos-x64
-mv ./dist/app-win.exe ./dist/thdownloader-windows-x64.exe
+# Generate the standalone executables for each platform
+yarn pkg build/src/app.js \
+  --config package.json   \
+  --no-bytecode           \
+  --public-packages \"*\" \
+  --public
 
-cd dist 
-zip thdownloader-linux-x64.zip thdownloader-linux-x64 config.jsonc README.md
-zip thdownloader-macos-x64.zip thdownloader-macos-x64 config.jsonc README.md
-zip thdownloader-windows-x64.zip thdownloader-windows-x64.exe config.jsonc README.md
-
-rm thdownloader-windows-x64.exe thdownloader-linux-x64 thdownloader-macos-x64 config.jsonc README.md
+cd dist
+# Create a zip file for each platform
+for platform in linux macos win
+do
+  ext=
+  if [ $platform = "win" ]; then
+    ext=".exe"
+  fi
+  zip --junk-paths "toyhouse-downloader-$platform-x64.zip"  \
+    "./@clovercoin/toyhouse-downloader-$platform$ext"       \
+    "../config.example.jsonc"                               \
+    "../README.md"
+done
+rm -rf "./@clovercoin"

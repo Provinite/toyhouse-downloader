@@ -496,6 +496,7 @@ __metadata:
   dependencies:
     "@types/chromedriver": "npm:^81.0.1"
     "@types/jest": "npm:^29.5.12"
+    "@types/node": "npm:22.5.4"
     "@types/prettier": "npm:^2"
     "@yarnpkg/sdks": "npm:^3.0.0-rc.32"
     chromedriver: "npm:^108.0.0"
@@ -509,6 +510,8 @@ __metadata:
     ts-node: "npm:^10.9.1"
     typescript: "npm:^4.9.4"
     winston: "npm:^3.8.2"
+  bin:
+    toyhouse-downloader: ./build/src/app.js
   languageName: unknown
   linkType: soft
 
@@ -1162,6 +1165,15 @@ __metadata:
   version: 18.11.13
   resolution: "@types/node@npm:18.11.13"
   checksum: 39f711d3d3d90aea6116e6f1b9be71333b4990cfb2dc8047a92bfaadacbc817bea5217abef6b40938c1e51e6006a26593ab07256fa138e5a47e1dcacf4eee2d3
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:22.5.4":
+  version: 22.5.4
+  resolution: "@types/node@npm:22.5.4"
+  dependencies:
+    undici-types: "npm:~6.19.2"
+  checksum: b7884378612778f6412904a0ad278146276dc407f9660a1229783b4c8dbebb05d6d0e7d485f6df541b9ae84aa2dce8571694f9c0733ff50286f85b299fba348d
   languageName: node
   linkType: hard
 
@@ -5752,6 +5764,13 @@ __metadata:
     buffer: "npm:^5.2.1"
     through: "npm:^2.3.8"
   checksum: 3e430b599317954643f4a8b5b17a92ee196290ed939913827479668d134f33d4ba46cd027932e0a1e1a721b2b815ff471c06fd17212c5f4b31a9d45c03798993
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 27c8b8f8e484976a6dd4f5f997fcbdf20ad85213575061a37306e4fb12b9963c311d383625aa6db874f8f6c4ed88d509fd007a10b90b359b04819fb239418951
   languageName: node
   linkType: hard
 
