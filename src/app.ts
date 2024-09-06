@@ -20,9 +20,6 @@ async function main() {
   if (await promptForAutoUpdate()) {
     return applyUpdate();
   }
-  if (Math.random() < 2) {
-    throw new Error("WHOOP");
-  }
   let browser: PreparedBrowser | undefined;
   try {
     logger.info("[Startup]");
