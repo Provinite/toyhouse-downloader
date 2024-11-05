@@ -1,3 +1,8 @@
+# 1.1.2-bumpbot
+
+- Don't download chromium when its already installed
+- Add stealthmode
+
 # 0.2.2-beta
 
 - Drastically speed up character list fetching
