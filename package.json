@@ -15,7 +15,9 @@
   "dependencies": {
     "chromium": "3.0.3",
     "jsonc": "^2.0.0",
-    "puppeteer": "^19.4.0",
+    "puppeteer": "^23.7.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "winston": "^3.8.2"
   },
   "devDependencies": {

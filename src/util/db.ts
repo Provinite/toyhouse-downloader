@@ -1,5 +1,5 @@
 import { promises as fs, existsSync } from "fs";
-import { Protocol } from "puppeteer";
+import { Cookie, Protocol } from "puppeteer";
 import { join, resolve } from "path";
 import { FolderTree } from "../toyhouse";
 
@@ -67,7 +67,7 @@ export interface GalleryImage {
  * Browser cookies database. Stores browser cookies between
  * sessions to avoid unnecessary logins.
  */
-export const browserCookies = createDb<Protocol.Network.Cookie[], []>(() =>
+export const browserCookies = createDb<Cookie[], []>(() =>
   resolve(join(".", "cookies.json"))
 );
 

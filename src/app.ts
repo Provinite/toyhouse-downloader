@@ -1,4 +1,4 @@
-import { PreparedBrowser, shutdown, startup } from "./browser";
+import { PreparedBrowser, screenshot, shutdown, startup } from "./browser";
 
 import { logger } from "./logging";
 import { loginToToyhouse } from "./toyhouse.puppeteer";
@@ -55,6 +55,11 @@ async function main() {
     logger.error(`Fatal error during downloading process`);
     logger.error(err);
     logger.error(err?.stack);
+    if (browser) {
+      await screenshot(browser.page, {
+        path: "./error.jpg",
+      });
+    }
   } finally {
     if (browser) {
       await shutdown(browser);

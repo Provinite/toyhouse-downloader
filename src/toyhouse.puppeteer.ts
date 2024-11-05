@@ -31,7 +31,6 @@ export async function loginToToyhouse(page: Page) {
     await page.evaluate(homePage.clickLogin);
     await page.waitForNavigation({ waitUntil: "networkidle2" });
     if (page.url().endsWith("/~account/login")) {
-      await screenshot(page, { path: "./debug.jpg" });
       throw new Error(
         "Error logging in. Please check your username and password"
       );
