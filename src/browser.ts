@@ -5,6 +5,7 @@ import chromium from "chromium";
 import chromiumConfig from "chromium/config";
 import { join, resolve } from "path";
 import { getConfig } from "./config";
+import { fileIsVisible } from "./util/fileIsVisible";
 /**
  * Start up a puppeteer browser, launch a new page. Attaches
  * debug logging and loads cookies from cache.
@@ -12,13 +13,16 @@ import { getConfig } from "./config";
 export async function startup(): Promise<PreparedBrowser> {
   // install chromium
   const config = await getConfig();
-  const chromiumPath = resolve(join(".", "chromium"));
-  logger.info(`Installing chromium to ${chromiumPath}`);
-  chromiumConfig.BIN_OUT_PATH = chromiumPath;
-  // TODO: Eventually our version of `chromedriver` will
-  // drift from the latest chrome. Need to pin the
-  // chrome revision to use here.
-  await chromium.install();
+  if (!(await fileIsVisible(chromium.path))) {
+    const chromiumPath = resolve(join(".", "chromium"));
+    chromiumConfig.BIN_OUT_PATH = chromiumPath;
+    logger.info(`Installing chromium to ${chromiumPath}`);
+
+    // TODO: Eventually our version of `chromedriver` will
+    // drift from the latest chrome. Need to pin the
+    // chrome revision to use here.
+    await chromium.install();
+  }
 
   // fire up chromium from the portable install
   logger.info(`Starting chromium from ${chromium.path}`);
